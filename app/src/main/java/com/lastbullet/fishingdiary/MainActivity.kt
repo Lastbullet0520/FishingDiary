@@ -31,6 +31,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.fragment.NavHostFragment
 import coil.compose.rememberAsyncImagePainter
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.inappmessaging.internal.Logging.TAG
@@ -75,8 +77,11 @@ fun Greeting() {
             contentDescription = "default image",
             modifier = Modifier.size(240.dp)
         )
-        var fishName by remember{ mutableStateOf("") }
-        TextField(value = fishName, onValueChange = {fishName = it}, label = { Text(text = "잡은 어종을 입력하세요")})
+        var fishName by remember { mutableStateOf("") }
+        TextField(
+            value = fishName,
+            onValueChange = { fishName = it },
+            label = { Text(text = "잡은 어종을 입력하세요") })
         Row {
             Button(onClick = {
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
@@ -85,8 +90,9 @@ fun Greeting() {
             }
             Button(onClick = { /*TODO : firebase 적용*/
 // Register observers to listen for when the download is done or if it fails
-            val riversRef = storageRef.child("Images/${imgUri!!.lastPathSegment}") //TODO 사진 선택 안하고 업로드 에러 nullsafety 필요
-            var uploadTask = riversRef.putFile(imgUri!!)
+                val riversRef =
+                    storageRef.child("Images/${imgUri!!.lastPathSegment}") //TODO 사진 선택 안하고 업로드 에러 nullsafety 필요
+                val uploadTask = riversRef.putFile(imgUri!!)
                 uploadTask.addOnSuccessListener { taskSnapshot ->
                     // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
                     // ...
@@ -96,12 +102,19 @@ fun Greeting() {
                     db.collection("fishNameList")
                         .document("XyfudoakHUL4XHuin7ZK")
                         .set(tempName)
-                        .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
+                        .addOnSuccessListener {
+                            Log.d(
+                                TAG,
+                                "DocumentSnapshot successfully written!"
+                            )
+                        }
                         .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
 
-                    Toast.makeText(context, "업로드에 성공했습니다.", Toast.LENGTH_SHORT).show() // TODO 출력이 안됨
+                    Toast.makeText(context, "업로드에 성공했습니다.", Toast.LENGTH_SHORT)
+                        .show() // TODO 출력이 안됨
                 }.addOnFailureListener {
-                    Toast.makeText(context, "업로드에 실패했습니다.", Toast.LENGTH_SHORT).show() // TODO 출력되기 전에 nullpointexception
+                    Toast.makeText(context, "업로드에 실패했습니다.", Toast.LENGTH_SHORT)
+                        .show() // TODO 출력되기 전에 nullpointexception
                     // Handle unsuccessful uploads
                 }
             }) {
