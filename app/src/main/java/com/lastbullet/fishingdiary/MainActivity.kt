@@ -29,9 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.inappmessaging.internal.Logging.TAG
@@ -45,14 +42,14 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FishingDiaryTheme {
-                Greeting()
+                UploadDiaryScreen()
             }
         }
     }
 }
 
 @Composable
-fun Greeting() {
+fun UploadDiaryScreen() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceAround,
@@ -97,7 +94,7 @@ fun Greeting() {
 @Composable
 fun GreetingPreview() {
     FishingDiaryTheme {
-        Greeting()
+        UploadDiaryScreen()
     }
 }
 
