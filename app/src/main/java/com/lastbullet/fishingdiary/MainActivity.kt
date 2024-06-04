@@ -29,6 +29,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.inappmessaging.internal.Logging.TAG
@@ -97,7 +100,6 @@ fun GreetingPreview() {
         Greeting()
     }
 }
-
 
 private fun uploadButtonOnClick(fishName: String, imgUri: Uri?, context: android.content.Context) {
     val db = Firebase.firestore // firestore 데이터베이스 초기화
