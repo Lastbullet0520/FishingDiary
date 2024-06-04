@@ -2,6 +2,7 @@ package com.lastbullet.fishingdiary
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -32,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.inappmessaging.internal.Logging.TAG
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.lastbullet.fishingdiary.ui.theme.FishingDiaryTheme
@@ -88,8 +90,15 @@ fun Greeting() {
                 uploadTask.addOnSuccessListener { taskSnapshot ->
                     // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
                     // ...
-                    val takeMetadata= taskSnapshot.metadata
-                    takeMetadata?.getCustomMetadata(fishName)
+                    val tempName = hashMapOf(
+                        "fishname" to fishName
+                    )
+                    db.collection("fishNameList")
+                        .document("XyfudoakHUL4XHuin7ZK")
+                        .set(tempName)
+                        .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
+                        .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+
                     Toast.makeText(context, "업로드에 성공했습니다.", Toast.LENGTH_SHORT).show() // TODO 출력이 안됨
                 }.addOnFailureListener {
                     Toast.makeText(context, "업로드에 실패했습니다.", Toast.LENGTH_SHORT).show() // TODO 출력되기 전에 nullpointexception
