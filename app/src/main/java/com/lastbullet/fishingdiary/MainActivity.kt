@@ -31,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.lastbullet.fishingdiary.ui.theme.FishingDiaryTheme
@@ -60,6 +61,7 @@ fun Greeting() {
         var imgUri by remember {
             mutableStateOf<Uri?>(null)
         }
+        val db = Firebase.firestore
         val storage = Firebase.storage("gs://sparta-f5aee.appspot.com")
         val storageRef = storage.reference
         val pickMedia =
@@ -72,7 +74,7 @@ fun Greeting() {
             modifier = Modifier.size(240.dp)
         )
         var fishName by remember{ mutableStateOf("") }
-        TextField(value = fishName, onValueChange = {fishName = it})
+        TextField(value = fishName, onValueChange = {fishName = it}, label = { Text(text = "잡은 어종을 입력하세요")})
         Row {
             Button(onClick = {
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
@@ -80,16 +82,17 @@ fun Greeting() {
                 Text(text = "사진 선택")
             }
             Button(onClick = { /*TODO : firebase 적용*/
-                val riversRef = storageRef.child("images/${imgUri!!.lastPathSegment}")
-                var uploadTask = riversRef.putFile(imgUri!!)
-
 // Register observers to listen for when the download is done or if it fails
+            val riversRef = storageRef.child("Images/${imgUri!!.lastPathSegment}") //TODO 사진 선택 안하고 업로드 에러 nullsafety 필요
+            var uploadTask = riversRef.putFile(imgUri!!)
                 uploadTask.addOnSuccessListener { taskSnapshot ->
                     // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
                     // ...
-                    taskSnapshot.metadata
+                    val takeMetadata= taskSnapshot.metadata
+                    takeMetadata?.getCustomMetadata(fishName)
+                    Toast.makeText(context, "업로드에 성공했습니다.", Toast.LENGTH_SHORT).show() // TODO 출력이 안됨
                 }.addOnFailureListener {
-                    Toast.makeText(context, "업로드에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "업로드에 실패했습니다.", Toast.LENGTH_SHORT).show() // TODO 출력되기 전에 nullpointexception
                     // Handle unsuccessful uploads
                 }
             }) {
