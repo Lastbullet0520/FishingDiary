@@ -19,6 +19,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material3.MenuDefaults
+import androidx.compose.material3.MenuItemColors
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,9 +34,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -104,6 +108,7 @@ fun <T> SearchableExpandedDropDownMenu(
         OutlinedTextField(
             modifier = modifier,
             colors = colors,
+            textStyle = TextStyle(Color.Black),
             value = selectedOptionText,
             readOnly = readOnly,
             enabled = enable,
@@ -146,7 +151,7 @@ fun <T> SearchableExpandedDropDownMenu(
         if (expanded) {
             DropdownMenu(
                 modifier = Modifier
-                    .fillMaxWidth(0.75f)
+                    .fillMaxWidth()
                     .requiredSizeIn(maxHeight = maxHeight),
                 expanded = expanded,
                 onDismissRequest = { expanded = false },

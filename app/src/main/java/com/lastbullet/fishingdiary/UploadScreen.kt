@@ -23,6 +23,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
@@ -86,11 +88,7 @@ fun Greeting() {
             Text(text = "사진 선택")
         }
         var fishName by remember { mutableStateOf("") } // 어종(이름) 저장할 변수 지정
-//        TextField( //어종을 입력하는 입력창 TODO 1: 검색창으로 바꾸기
-//            value = fishName,        // TODO 2: 키워드 검색으로 선택만 할 수 있게 바꾸기
-//            onValueChange = { fishName = it },
-//            label = { Text(text = "잡은 어종을 입력하세요") })
-        val lists = mutableSetOf(
+        val lists = mutableSetOf( // TODO 리스트 늘리기
             "광어", "우럭(조피볼락)", "도다리", "넙치", "참돔", "벵어돔", "쥐치", "볼락", "돌돔", "연어", "장어"
         )
         val keyboardController = LocalSoftwareKeyboardController.current
@@ -113,7 +111,8 @@ fun Greeting() {
             },
             onSearchTextFieldClicked = {
                 keyboardController?.show()
-            })
+            },
+        )
 
     Row(
         modifier = Modifier.fillMaxWidth(0.9f),
@@ -171,7 +170,7 @@ private fun uploadButtonOnClick(fishName: String, imgUri: Uri?, context: android
             .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
 
         Toast.makeText(context, "업로드에 성공했습니다.", Toast.LENGTH_SHORT) // 성공시의 toast 메시지
-            .show() // TODO 출력이 늦다
+            .show()
     }.addOnFailureListener {
         Toast.makeText(context, "업로드에 실패했습니다.", Toast.LENGTH_SHORT) // 실패시의 toast 메시지
             .show() // TODO 출력되기 전에 nullpointexception
