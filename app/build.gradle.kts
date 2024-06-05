@@ -79,6 +79,7 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     implementation ("androidx.navigation:navigation-compose:2.7.7")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+    implementation ("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
 
 

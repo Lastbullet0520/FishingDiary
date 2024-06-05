@@ -13,6 +13,11 @@
         android:theme="@style/Theme.FishingDiary"
         tools:targetApi="31">
         <activity
+            android:name=".MainScreenActivity"
+            android:exported="false"
+            android:label="@string/title_activity_fish_info"
+            android:theme="@style/Theme.FishingDiary" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
