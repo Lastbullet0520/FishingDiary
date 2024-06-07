@@ -43,24 +43,6 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.lastbullet.fishingdiary.ui.theme.FishingDiaryTheme
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            FishingDiaryTheme {
-                UploadScreen()
-            }
-        }
-    }
-}
-@Composable
-fun navigateUp (navUp : ()-> Unit) {
-//    val navController = rememberNavController()
-//   {navController.navigateUp()}
-}
-
-
 @Composable
 fun UploadScreen(navigateUp: () -> Unit = {}) {
     Column(
@@ -119,35 +101,25 @@ fun UploadScreen(navigateUp: () -> Unit = {}) {
             },
         )
 
-    Row(
-        modifier = Modifier.fillMaxWidth(0.9f),
-        horizontalArrangement = Arrangement.SpaceAround
-    ) {
-        Button(onClick = {
-            navigateUp()
-        }) {
-            Text(text = "취소")
+        Row(
+            modifier = Modifier.fillMaxWidth(0.9f),
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            Button(onClick = {
+                navigateUp()
+            }) {
+                Text(text = "취소")
+            }
+
+            Button(onClick = { // onClick에 들어가는 것들이 너무 많아짐에 따라 변수로 빼둘까 생각 중
+                uploadButtonOnClick(fishName = fishName, imgUri = imgUri, context = context)
+            }) {
+                Text(text = "업로드")
+            }
         }
 
-        Button(onClick = { // onClick에 들어가는 것들이 너무 많아짐에 따라 변수로 빼둘까 생각 중
-            uploadButtonOnClick(fishName = fishName, imgUri = imgUri, context = context)
-        }) {
-            Text(text = "업로드")
-        }
     }
 
-}
-
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    val keyboard = LocalSoftwareKeyboardController.current
-    FishingDiaryTheme {
-        UploadScreen()
-    }
 }
 
 private fun uploadButtonOnClick(fishName: String, imgUri: Uri?, context: android.content.Context) {

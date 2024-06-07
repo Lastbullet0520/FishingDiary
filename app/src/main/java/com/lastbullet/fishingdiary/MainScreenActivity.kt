@@ -26,7 +26,6 @@ import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,10 +37,10 @@ import androidx.navigation.compose.rememberNavController
 import com.lastbullet.fishingdiary.ui.theme.FishingDiaryTheme
 
 enum class ScreenName(val screenName: String, val description: String) {
-    HOME("MAIN" ,"메인화면"),
-    INFO("INFO","정보화면"),
-    FEED("FEED","타임라인"),
-    UPLOAD("UPLOAD","업로드")
+    HOME("MAIN", "메인화면"),
+    INFO("INFO", "정보화면"),
+    FEED("FEED", "타임라인"),
+    UPLOAD("UPLOAD", "업로드")
 }
 
 class MainScreenActivity : ComponentActivity() {
@@ -57,84 +56,8 @@ class MainScreenActivity : ComponentActivity() {
 }
 
 @Composable
-fun HomeScreen(uploadScreen : () -> Unit) {
+fun HomeScreen(screenChange: () -> Unit = {}) {
 //    val context = LocalContext.current
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .scrollable(state = ScrollableState { _ -> 1f }, orientation = Orientation.Vertical)
-
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.9f)
-                .background(color = Color(0xffd3f0f0))
-        ) {
-            IconButton(
-                onClick = { uploadScreen() }, modifier = Modifier
-                    .align(BiasAlignment(0.9f, 0.95f))
-                    .clip(CircleShape)
-                    .size(80.dp),
-                colors = IconButtonDefaults.iconButtonColors(Color.Red)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.baseline_add_a_photo_24),
-                    contentDescription = null,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.1f)
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .weight(1f)
-                    .background(Color.Red)
-            ) {
-                IconButton(
-                    onClick = { /*TODO*/ },
-                    modifier = Modifier.align(Alignment.Center)
-                ) {
-
-                    Text(text = "Home", fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                }
-            }
-            Box(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .weight(1f)
-                    .background(Color.Blue)
-            ) {
-                IconButton(
-                    onClick = { /*TODO*/ },
-                    modifier = Modifier.align(Alignment.Center)
-                ) {
-
-                    Text(text = "Info", fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                }
-            }
-            Box(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .weight(1f)
-                    .background(Color.Yellow)
-            ) {
-                IconButton(
-                    onClick = {
-                    },
-                    modifier = Modifier.align(Alignment.Center)
-                ) {
-
-                    Text(text = "Feed", fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                }
-            }
-        }
-    }
 }
 
 @Preview(showBackground = true)
@@ -148,23 +71,87 @@ fun GreetingPreview2() {
 @Composable
 fun Screen(routeName: String) {
     val navController = rememberNavController()
-
-    NavHost(navController,routeName) {
+    NavHost(navController, routeName) {
         composable(ScreenName.HOME.screenName) {
-            HomeScreen(
-                uploadScreen = {navController.navigate(ScreenName.UPLOAD.screenName)}
-            )
+            Box {
+                HomeScreen(
+                    screenChange = { navController.navigate(ScreenName.UPLOAD.screenName) },
+                )
+                NavigationBar()
+            }
         }
         composable(ScreenName.FEED.screenName) {
-            // TODO 타임라인 화면 만들고 연결
+            Box {
+                FeedScreen(
+                    screenChange = { navController.navigate(ScreenName.UPLOAD.screenName) }
+                )
+                NavigationBar()
+
+            }
         }
         composable(ScreenName.INFO.screenName) {
-            // TODO 정보 보여줄 화면 만들고 연결
+            Box {
+                InfoScreen(
+                    screenChange = { navController.navigate(ScreenName.UPLOAD.screenName) }
+                )
+                NavigationBar()
+            }
         }
         composable(ScreenName.UPLOAD.screenName) {
             UploadScreen(
-                navigateUp = {navController.navigateUp()},
-                )
+                navigateUp = { navController.navigateUp() },
+            )
+        }
+    }
+}
+
+@Composable
+fun BottomNavigationBar(modifier: Modifier) {
+    val navController = rememberNavController()
+    Row(
+        modifier = modifier
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(1f)
+                .background(Color.Red)
+        ) {
+            IconButton(
+                onClick = { navController.navigate(ScreenName.HOME.screenName) },
+                modifier = Modifier.align(Alignment.Center)
+            ) {
+
+                Text(text = "Home", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+            }
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(1f)
+                .background(Color.Blue)
+        ) {
+            IconButton(
+                onClick = { navController.navigate(ScreenName.INFO.screenName) },
+                modifier = Modifier.align(Alignment.Center)
+            ) {
+
+                Text(text = "Info", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+            }
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(1f)
+                .background(Color.Yellow)
+        ) {
+            IconButton(
+                onClick = { navController.navigate(ScreenName.FEED.screenName) },
+                modifier = Modifier.align(Alignment.Center)
+            ) {
+
+                Text(text = "Feed", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+            }
         }
     }
 }
