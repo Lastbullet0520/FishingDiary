@@ -27,12 +27,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.ui.NavigationUI.navigateUp
 import coil.compose.rememberAsyncImagePainter
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.inappmessaging.internal.Logging.TAG
@@ -51,14 +54,15 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-//@Composable
-//fun navigate (navController: NavHostController) {
-//    navController.navigate(ScreenName.UPLOAD.screenName)
-//}
+@Composable
+fun navigateUp (navUp : ()-> Unit) {
+//    val navController = rememberNavController()
+//   {navController.navigateUp()}
+}
 
 
 @Composable
-fun UploadScreen() {
+fun UploadScreen(navigateUp: () -> Unit = {}) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceAround,
@@ -119,7 +123,9 @@ fun UploadScreen() {
         modifier = Modifier.fillMaxWidth(0.9f),
         horizontalArrangement = Arrangement.SpaceAround
     ) {
-        Button(onClick = { /*TODO*/ }) {
+        Button(onClick = {
+            navigateUp()
+        }) {
             Text(text = "취소")
         }
 

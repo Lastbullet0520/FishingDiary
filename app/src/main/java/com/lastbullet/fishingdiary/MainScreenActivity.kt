@@ -58,7 +58,7 @@ class MainScreenActivity : ComponentActivity() {
 
 @Composable
 fun HomeScreen(uploadScreen : () -> Unit) {
-    val context = LocalContext.current
+//    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -152,7 +152,8 @@ fun Screen(routeName: String) {
     NavHost(navController,routeName) {
         composable(ScreenName.HOME.screenName) {
             HomeScreen(
-                uploadScreen = {navController.navigate(ScreenName.UPLOAD.screenName)})
+                uploadScreen = {navController.navigate(ScreenName.UPLOAD.screenName)}
+            )
         }
         composable(ScreenName.FEED.screenName) {
             // TODO 타임라인 화면 만들고 연결
@@ -161,8 +162,9 @@ fun Screen(routeName: String) {
             // TODO 정보 보여줄 화면 만들고 연결
         }
         composable(ScreenName.UPLOAD.screenName) {
-
-            UploadScreen()
+            UploadScreen(
+                navigateUp = {navController.navigateUp()},
+                )
         }
     }
 }
