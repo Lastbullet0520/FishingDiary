@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.sp
 import com.lastbullet.fishingdiary.ui.theme.FishingDiaryTheme
 
 @Composable
-fun InfoScreen(screenChange : () -> Unit = {}) {
+fun InfoScreen() {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,

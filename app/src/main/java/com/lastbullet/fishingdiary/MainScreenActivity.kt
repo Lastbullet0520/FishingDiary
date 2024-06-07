@@ -5,9 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.ScrollableState
-import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -56,8 +54,18 @@ class MainScreenActivity : ComponentActivity() {
 }
 
 @Composable
-fun HomeScreen(screenChange: () -> Unit = {}) {
+fun HomeScreen() {
 //    val context = LocalContext.current
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(text = "메인화면 공사중",
+            color = Color.Black,
+            fontSize = 48.sp
+        )
+    }
 }
 
 @Preview(showBackground = true)
@@ -75,7 +83,6 @@ fun Screen(routeName: String) {
         composable(ScreenName.HOME.screenName) {
             Box {
                 HomeScreen(
-                    screenChange = { navController.navigate(ScreenName.UPLOAD.screenName) },
                 )
                 NavigationBar()
             }
@@ -83,16 +90,13 @@ fun Screen(routeName: String) {
         composable(ScreenName.FEED.screenName) {
             Box {
                 FeedScreen(
-                    screenChange = { navController.navigate(ScreenName.UPLOAD.screenName) }
                 )
                 NavigationBar()
-
             }
         }
         composable(ScreenName.INFO.screenName) {
             Box {
                 InfoScreen(
-                    screenChange = { navController.navigate(ScreenName.UPLOAD.screenName) }
                 )
                 NavigationBar()
             }
@@ -153,5 +157,31 @@ fun BottomNavigationBar(modifier: Modifier) {
                 Text(text = "Feed", fontSize = 12.sp, fontWeight = FontWeight.Bold)
             }
         }
+    }
+}
+@Composable
+fun NavigationBar(screenChange : () -> Unit = {} ) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .background(color = Color(0x00000000))
+    ) {
+        IconButton(
+            onClick = { screenChange() }, modifier = Modifier
+                .align(BiasAlignment(0.9f, 0.7f))
+                .clip(CircleShape)
+                .size(80.dp),
+            colors = IconButtonDefaults.iconButtonColors(Color.Red)
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.baseline_add_a_photo_24),
+                contentDescription = null,
+                modifier = Modifier.size(24.dp)
+            )
+        }
+        BottomNavigationBar(modifier = Modifier
+            .fillMaxHeight(0.1f)
+            .align(Alignment.BottomStart))
     }
 }

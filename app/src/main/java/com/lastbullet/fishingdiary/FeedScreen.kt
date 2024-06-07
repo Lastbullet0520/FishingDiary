@@ -3,6 +3,7 @@ package com.lastbullet.fishingdiary
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,9 +15,9 @@ import androidx.compose.ui.unit.sp
 import com.lastbullet.fishingdiary.ui.theme.FishingDiaryTheme
 
 @Composable
-fun FeedScreen(screenChange: () -> Unit = {}, modifier: Modifier = Modifier.fillMaxHeight(0.9f)) {
+fun FeedScreen() {
     Column(
-        modifier = modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
