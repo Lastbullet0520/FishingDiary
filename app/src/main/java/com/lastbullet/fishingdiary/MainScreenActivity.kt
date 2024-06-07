@@ -32,8 +32,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.lastbullet.fishingdiary.ui.theme.FishingDiaryTheme
 
+enum class ScreenName(val screenName: String, val description: String) {
+    HOME("MAIN" ,"메인화면"),
+    INFO("INFO","정보화면"),
+    FEED("FEED","타임라인"),
+    UPLOAD("UPLOAD","업로드")
+}
 
 class MainScreenActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,14 +50,14 @@ class MainScreenActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FishingDiaryTheme {
-                Greeting2()
+                Screen(routeName = ScreenName.HOME.screenName)
             }
         }
     }
 }
 
 @Composable
-fun Greeting2() {
+fun HomeScreen(uploadScreen : () -> Unit) {
     val context = LocalContext.current
     Column(
         modifier = Modifier
@@ -63,7 +72,7 @@ fun Greeting2() {
                 .background(color = Color(0xffd3f0f0))
         ) {
             IconButton(
-                onClick = { /*TODO*/ }, modifier = Modifier
+                onClick = { uploadScreen() }, modifier = Modifier
                     .align(BiasAlignment(0.9f, 0.95f))
                     .clip(CircleShape)
                     .size(80.dp),
@@ -116,7 +125,8 @@ fun Greeting2() {
                     .background(Color.Yellow)
             ) {
                 IconButton(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                    },
                     modifier = Modifier.align(Alignment.Center)
                 ) {
 
@@ -131,6 +141,28 @@ fun Greeting2() {
 @Composable
 fun GreetingPreview2() {
     FishingDiaryTheme {
-        Greeting2()
+        Screen(ScreenName.HOME.screenName)
+    }
+}
+
+@Composable
+fun Screen(routeName: String) {
+    val navController = rememberNavController()
+
+    NavHost(navController,routeName) {
+        composable(ScreenName.HOME.screenName) {
+            HomeScreen(
+                uploadScreen = {navController.navigate(ScreenName.UPLOAD.screenName)})
+        }
+        composable(ScreenName.FEED.screenName) {
+            // TODO 타임라인 화면 만들고 연결
+        }
+        composable(ScreenName.INFO.screenName) {
+            // TODO 정보 보여줄 화면 만들고 연결
+        }
+        composable(ScreenName.UPLOAD.screenName) {
+
+            UploadScreen()
+        }
     }
 }
