@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -47,7 +50,7 @@ class MainScreenActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FishingDiaryTheme {
-                Screen(routeName = ScreenName.HOME.screenName)
+                Screen()
             }
         }
     }
@@ -72,33 +75,34 @@ fun HomeScreen() {
 @Composable
 fun GreetingPreview2() {
     FishingDiaryTheme {
-        Screen(ScreenName.HOME.screenName)
+        Screen()
     }
 }
 
 @Composable
-fun Screen(routeName: String) {
+fun Screen() {
     val navController = rememberNavController()
-    NavHost(navController, routeName) {
+    NavHost(navController, startDestination = ScreenName.HOME.screenName,
+        enterTransition = { fadeIn(initialAlpha = 0f)}, exitTransition = { fadeOut(targetAlpha = 0f) }) {
         composable(ScreenName.HOME.screenName) {
             Box {
                 HomeScreen(
                 )
-                NavigationBar()
+                NavigationBar(navController)
             }
         }
         composable(ScreenName.FEED.screenName) {
             Box {
                 FeedScreen(
                 )
-                NavigationBar()
+                NavigationBar(navController)
             }
         }
         composable(ScreenName.INFO.screenName) {
             Box {
                 InfoScreen(
                 )
-                NavigationBar()
+                NavigationBar(navController)
             }
         }
         composable(ScreenName.UPLOAD.screenName) {
@@ -110,9 +114,8 @@ fun Screen(routeName: String) {
 }
 
 @Composable
-fun BottomNavigationBar(modifier: Modifier) {
-    val navController = rememberNavController()
-    Row(
+fun BottomNavigationBar(modifier: Modifier, navController : androidx.navigation.NavHostController) {
+        Row(
         modifier = modifier
     ) {
         Box(
@@ -160,7 +163,7 @@ fun BottomNavigationBar(modifier: Modifier) {
     }
 }
 @Composable
-fun NavigationBar(screenChange : () -> Unit = {} ) {
+fun NavigationBar(navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -168,7 +171,7 @@ fun NavigationBar(screenChange : () -> Unit = {} ) {
             .background(color = Color(0x00000000))
     ) {
         IconButton(
-            onClick = { screenChange() }, modifier = Modifier
+            onClick = { navController.navigate(ScreenName.UPLOAD.screenName) }, modifier = Modifier
                 .align(BiasAlignment(0.9f, 0.7f))
                 .clip(CircleShape)
                 .size(80.dp),
@@ -182,6 +185,6 @@ fun NavigationBar(screenChange : () -> Unit = {} ) {
         }
         BottomNavigationBar(modifier = Modifier
             .fillMaxHeight(0.1f)
-            .align(Alignment.BottomStart))
+            .align(Alignment.BottomStart),navController)
     }
 }

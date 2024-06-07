@@ -26,33 +26,33 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
-@Preview(showBackground = true)
-@Composable
-fun NavigationBar(screenChange : ()->Unit = {} ) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .background(color = Color(0x00000000))
-    ) {
-        IconButton(
-            onClick = { screenChange() }, modifier = Modifier
-                .align(BiasAlignment(0.9f, 0.7f))
-                .clip(CircleShape)
-                .size(80.dp),
-            colors = IconButtonDefaults.iconButtonColors(Color.Red)
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.baseline_add_a_photo_24),
-                contentDescription = null,
-                modifier = Modifier.size(24.dp)
-            )
-        }
-        BottomNavigationBar(modifier = Modifier
-            .fillMaxHeight(0.1f)
-            .align(Alignment.BottomStart))
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun NavigationBar(screenChange : ()->Unit = {} ) {
+//    Box(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .fillMaxHeight()
+//            .background(color = Color(0x00000000))
+//    ) {
+//        IconButton(
+//            onClick = { screenChange() }, modifier = Modifier
+//                .align(BiasAlignment(0.9f, 0.7f))
+//                .clip(CircleShape)
+//                .size(80.dp),
+//            colors = IconButtonDefaults.iconButtonColors(Color.Red)
+//        ) {
+//            Icon(
+//                painter = painterResource(id = R.drawable.baseline_add_a_photo_24),
+//                contentDescription = null,
+//                modifier = Modifier.size(24.dp)
+//            )
+//        }
+//        BottomNavigationBar(modifier = Modifier
+//            .fillMaxHeight(0.1f)
+//            .align(Alignment.BottomStart))
+//    }
+//}
 
 
 
