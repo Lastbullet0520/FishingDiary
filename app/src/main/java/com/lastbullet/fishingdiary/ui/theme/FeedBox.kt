@@ -20,11 +20,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.lastbullet.fishingdiary.R
+import com.lastbullet.fishingdiary.UploadScreen
 
 
 @Composable
-fun FeedBox(fishName : String, date : String) {
+fun FeedBox(/*TODO 이미지 Url 불러오기?*/fishName : String, date : String) {
+    val db = Firebase.firestore
+    val storage = Firebase.storage("gs://sparta-f5aee.appspot.com")
+    var storageRef = storage.reference
     Row(
         modifier = Modifier
             .background(BottomButtonColor)
