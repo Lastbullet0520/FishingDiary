@@ -32,23 +32,26 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.inappmessaging.internal.Logging.TAG
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import com.lastbullet.fishingdiary.ui.theme.BackgrounColor
+import com.lastbullet.fishingdiary.ui.theme.BackgroundColor
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import kotlin.time.Duration.Companion.days
+
+
+
+
 
 @Composable
 fun UploadScreen(navigateUp: () -> Unit = {}) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceAround,
-        modifier = Modifier.fillMaxSize().background(BackgrounColor)
+        modifier = Modifier.fillMaxSize().background(BackgroundColor)
     ) {
         val context = LocalContext.current // context 초기화
         var imgUri by remember { // 이미지의 uri 저장하기 위한 변수 지정
             mutableStateOf<Uri?>(null)
         }
-        var imgisNull by remember{ mutableStateOf(false)}
+        var imgIsNull by remember{ mutableStateOf(false)}
         val pickMedia = // photopicker 초기화. 아래는 uri로 불러올 때 사용
             rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 imgUri = uri
@@ -58,7 +61,7 @@ fun UploadScreen(navigateUp: () -> Unit = {}) {
                 Text(text = "이미지를 추가해주세요!", modifier = Modifier.align(Alignment.Center))
             }
         } else {
-            imgisNull = true
+            imgIsNull = true
             Image( // uri로 불러온 이미지 출력
                 painter = rememberAsyncImagePainter(imgUri),
                 contentDescription = "default image",
@@ -84,10 +87,10 @@ fun UploadScreen(navigateUp: () -> Unit = {}) {
                     item,
                     Toast.LENGTH_SHORT,
                 ).show()
+                fishName = item
             },
             dropdownItem = { test ->
                 Text(text = test)
-                fishName = test
             },
             defaultItem = {
                 Log.e("DEFAULT_ITEM", it)
@@ -112,10 +115,9 @@ fun UploadScreen(navigateUp: () -> Unit = {}) {
                     fishName = fishName,
                     imgUri = imgUri,
                     context = context,
-                    navigateUp,
-
+                    navigateUp
                 )
-            }, enabled = imgisNull) {
+            }, enabled = imgIsNull) {
                 Text(text = "업로드")
             }
         }
@@ -141,14 +143,14 @@ private fun uploadButtonOnClick(
         // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
         // ...
         val localDateTime : LocalDateTime =LocalDateTime.now()
-        val tempName = hashMapOf(  // firestore에 넣을 "키" 와 값(value). 여기선 위에 작성한 어종(이름)이 들어간다.
+        val tempName = hashMapOf( // firestore에 넣을 "키" 와 값(value). 여기선 위에 작성한 어종(이름)이 들어간다.
             "fishname" to fishName,
             "imageUri" to imgUri,
             "localTime" to localDateTime
         )
         //firestore에 자료 보내기
         db.collection("fishNameList") // 컬렉션 이름; firestore에 먼저 생성 후 작성
-            .document("XyfudoakHUL4XHuin7ZK${DateTimeFormatter.ofPattern("yyyy.MM.dd.HH.mm.ss").format(localDateTime)}") // 폴더 이름; firestore에 먼저 생성 후 작성
+            .document(DateTimeFormatter.ofPattern("yyyy.MM.dd.HH.mm.ss").format(localDateTime)) // 폴더 이름; firestore에 먼저 생성 후 작성
             .set(tempName) // 키와 값(여기선 hashMap으로 들어간다)
             .addOnSuccessListener { // 성공시 나타내는 로그
                 Log.d(

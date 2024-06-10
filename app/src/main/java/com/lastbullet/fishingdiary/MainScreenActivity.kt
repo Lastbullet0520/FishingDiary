@@ -31,14 +31,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.graphics.toColor
-import androidx.core.graphics.toColorInt
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.lastbullet.fishingdiary.R.color.bottom_button_color
-import com.lastbullet.fishingdiary.ui.theme.BackgrounColor
+import com.lastbullet.fishingdiary.ui.theme.BackgroundColor
 import com.lastbullet.fishingdiary.ui.theme.BottomButtonColor
 import com.lastbullet.fishingdiary.ui.theme.FishingDiaryTheme
 
@@ -65,7 +62,7 @@ class MainScreenActivity : ComponentActivity() {
 fun HomeScreen() {
 //    val context = LocalContext.current
     Column(
-        modifier = Modifier.fillMaxSize().background(BackgrounColor),
+        modifier = Modifier.fillMaxSize().background(BackgroundColor),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
