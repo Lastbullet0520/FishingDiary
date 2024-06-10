@@ -33,8 +33,7 @@ fun <T> SearchableExpandedDropDownMenu(
     openedIcon: ImageVector = Icons.Outlined.KeyboardArrowUp,
     closedIcon: ImageVector = Icons.Outlined.KeyboardArrowDown,
     parentTextFieldCornerRadius: Dp = 12.dp,
-    colors: TextFieldColors = OutlinedTextFieldDefaults.colors(
-    ),
+    colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
     onDropDownItemSelected: (T) -> Unit = {},
     dropdownItem: @Composable (T) -> Unit,
     isError: Boolean = false,
@@ -54,18 +53,12 @@ fun <T> SearchableExpandedDropDownMenu(
 
     if (showDefaultSelectedItem) {
         selectedOptionText = selectedOptionText.ifEmpty { listOfItems[defaultItemIndex].toString() }
-
-        defaultItem(
-            listOfItems[defaultItemIndex],
-        )
+        defaultItem(listOfItems[defaultItemIndex])
     }
 
     val maxHeight = remember(itemHeights.toMap()) {
-        if (itemHeights.keys.toSet() != listOfItems.indices.toSet()) {
-            return@remember baseHeight
-        }
+        if (itemHeights.keys.toSet() != listOfItems.indices.toSet()) return@remember baseHeight
         val baseHeightInt = with(density) { baseHeight.toPx().toInt() }
-
         var sum = with(density) { DropdownMenuVerticalPadding.toPx().toInt() } * 2
         for ((_, itemSize) in itemHeights.toSortedMap()) {
             sum += itemSize
@@ -81,8 +74,7 @@ fun <T> SearchableExpandedDropDownMenu(
         contentAlignment = Alignment.TopStart
     ) {
         Column(
-            modifier = Modifier
-                .align(Alignment.TopCenter),
+            modifier = Modifier.align(Alignment.TopCenter),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             OutlinedTextField(
@@ -97,21 +89,12 @@ fun <T> SearchableExpandedDropDownMenu(
                 trailingIcon = {
                     IconToggleButton(
                         checked = expanded,
-                        onCheckedChange = {
-                            expanded = it
-                        },
+                        onCheckedChange = { expanded = it },
                     ) {
-                        if (expanded) {
-                            Icon(
-                                imageVector = openedIcon,
-                                contentDescription = null,
-                            )
-                        } else {
-                            Icon(
-                                imageVector = closedIcon,
-                                contentDescription = null,
-                            )
-                        }
+                        Icon(
+                            imageVector = if (expanded) openedIcon else closedIcon,
+                            contentDescription = null
+                        )
                     }
                 },
                 shape = RoundedCornerShape(parentTextFieldCornerRadius),
@@ -126,36 +109,28 @@ fun <T> SearchableExpandedDropDownMenu(
                                 }
                             }
                         }
-                    },
+                    }
             )
         }
+
         if (expanded) {
             DropdownMenu(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .requiredSizeIn(maxHeight = maxHeight)
-                    .absoluteOffset(y = 56.dp), // Adjust offset as needed
+                    .requiredSizeIn(maxHeight = maxHeight),
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
             ) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                ) {
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     OutlinedTextField(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp)
                             .focusRequester(focusRequester),
                         value = searchedOption,
-                        onValueChange = { selectedSport ->
-                            searchedOption = selectedSport
-                        },
-                        leadingIcon = {
-                            Icon(imageVector = Icons.Outlined.Search, contentDescription = null)
-                        },
-                        placeholder = {
-                            Text(text = "Search")
-                        },
+                        onValueChange = { searchedOption = it },
+                        leadingIcon = { Icon(imageVector = Icons.Outlined.Search, contentDescription = null) },
+                        placeholder = { Text(text = "Search") },
                         interactionSource = remember { MutableInteractionSource() }
                             .also { interactionSource ->
                                 LaunchedEffect(interactionSource) {
@@ -170,10 +145,7 @@ fun <T> SearchableExpandedDropDownMenu(
                     )
 
                     listOfItems.filter {
-                        it.toString().contains(
-                            searchedOption,
-                            ignoreCase = true,
-                        )
+                        it.toString().contains(searchedOption, ignoreCase = true)
                     }.forEach { selectedItem ->
                         DropdownMenuItem(
                             onClick = {
@@ -183,9 +155,7 @@ fun <T> SearchableExpandedDropDownMenu(
                                 searchedOption = ""
                                 expanded = false
                             },
-                            text = {
-                                dropdownItem(selectedItem)
-                            }
+                            text = { dropdownItem(selectedItem) }
                         )
                     }
                 }

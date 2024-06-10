@@ -31,10 +31,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.graphics.toColor
+import androidx.core.graphics.toColorInt
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.lastbullet.fishingdiary.R.color.bottom_button_color
+import com.lastbullet.fishingdiary.ui.theme.BackgrounColor
+import com.lastbullet.fishingdiary.ui.theme.BottomButtonColor
 import com.lastbullet.fishingdiary.ui.theme.FishingDiaryTheme
 
 enum class ScreenName(val screenName: String, val description: String) {
@@ -60,9 +65,9 @@ class MainScreenActivity : ComponentActivity() {
 fun HomeScreen() {
 //    val context = LocalContext.current
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().background(BackgrounColor),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         Text(text = "메인화면 공사중",
             color = Color.Black,
@@ -114,7 +119,7 @@ fun Screen() {
 }
 
 @Composable
-fun BottomNavigationBar(modifier: Modifier, navController : androidx.navigation.NavHostController) {
+fun BottomNavigationBar(modifier: Modifier, navController : NavHostController) {
         Row(
         modifier = modifier
     ) {
@@ -122,7 +127,7 @@ fun BottomNavigationBar(modifier: Modifier, navController : androidx.navigation.
             modifier = Modifier
                 .fillMaxHeight()
                 .weight(1f)
-                .background(Color.Red)
+                .background(BottomButtonColor)
         ) {
             IconButton(
                 onClick = { navController.navigate(ScreenName.HOME.screenName) },
@@ -136,7 +141,7 @@ fun BottomNavigationBar(modifier: Modifier, navController : androidx.navigation.
             modifier = Modifier
                 .fillMaxHeight()
                 .weight(1f)
-                .background(Color.Blue)
+                .background(BottomButtonColor)
         ) {
             IconButton(
                 onClick = { navController.navigate(ScreenName.INFO.screenName) },
@@ -150,7 +155,7 @@ fun BottomNavigationBar(modifier: Modifier, navController : androidx.navigation.
             modifier = Modifier
                 .fillMaxHeight()
                 .weight(1f)
-                .background(Color.Yellow)
+                .background(BottomButtonColor)
         ) {
             IconButton(
                 onClick = { navController.navigate(ScreenName.FEED.screenName) },
@@ -175,7 +180,7 @@ fun NavigationBar(navController: NavHostController) {
                 .align(BiasAlignment(0.9f, 0.7f))
                 .clip(CircleShape)
                 .size(80.dp),
-            colors = IconButtonDefaults.iconButtonColors(Color.Red)
+            colors = IconButtonDefaults.iconButtonColors(BottomButtonColor)
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.baseline_add_a_photo_24),
