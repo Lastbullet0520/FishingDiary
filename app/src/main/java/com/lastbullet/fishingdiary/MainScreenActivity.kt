@@ -52,6 +52,7 @@ class MainScreenActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FishingDiaryTheme {
+
                 Screen()
             }
         }
@@ -62,7 +63,9 @@ class MainScreenActivity : ComponentActivity() {
 fun HomeScreen() {
 //    val context = LocalContext.current
     Column(
-        modifier = Modifier.fillMaxSize().background(BackgroundColor),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(BackgroundColor),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {

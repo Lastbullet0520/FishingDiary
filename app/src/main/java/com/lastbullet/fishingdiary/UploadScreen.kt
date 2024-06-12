@@ -137,16 +137,17 @@ private fun uploadButtonOnClick(
     val storage = Firebase.storage("gs://sparta-f5aee.appspot.com") // firebase storage 초기화
     val storageRef = storage.reference // firebase storage reference 지정. 초기화랑 한묶음인듯
     val localDateTime : LocalDateTime =LocalDateTime.now()
+    val timeFormatter = "Images/${DateTimeFormatter.ofPattern("yyyy.MM.dd.HH.mm.ss").format(localDateTime)}.${imgUri!!.lastPathSegment}"
     val riversRef = // 이미지를 storage에 넣을 때 경로 지정하기
-        storageRef.child("Images/${DateTimeFormatter.ofPattern("yyyy.MM.dd.HH.mm.ss").format(localDateTime)}.${imgUri!!.lastPathSegment}") //TODO 사진 선택 안하고 업로드 에러 nullsafety 필요
+        storageRef.child(timeFormatter) //TODO 사진 선택 안하고 업로드 에러 nullsafety 필요
     val uploadTask = riversRef.putFile(imgUri) // 이미지를 storage에 넣는 작업. nullsafety 필수
     uploadTask.addOnSuccessListener { _ -> // 이미지를 성공적으로 넣었을 경우,
         // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
         // ...
         val tempName = hashMapOf( // firestore에 넣을 "키" 와 값(value). 여기선 위에 작성한 어종(이름)이 들어간다.
             "fishname" to fishName,
-            "imageUri" to imgUri,
-            "localTime" to localDateTime
+            "imageUri" to timeFormatter,
+
         )
         //firestore에 자료 보내기
         db.collection("fishNameList") // 컬렉션 이름; firestore에 먼저 생성 후 작성
